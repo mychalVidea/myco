@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYCO Vault</title>
+    <link rel="stylesheet" href="style.css?v=1.0.0">
+</head>
+
+<body>
+    <header class="app-header">
+        <div class="header-brand">
+            <div class="brand-badge">MYCO</div>
+            <h1>Vault <span>Universal Log Crypt & Viewer</span></h1>
+        </div>
+
+        <div class="header-secret">
+            <div class="secret-input-wrapper">
+                <span class="icon">🔒</span>
+                <input type="password" id="vaultSecretInput" placeholder="Enter VAULT_SECRET..." autocomplete="off">
+                <button id="toggleSecretVis" title="Show/Hide">👁️</button>
+            </div>
+            <button id="saveSecretBtn" class="btn btn-primary">Unlock</button>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <!-- Top Statistics Banner -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-label">Active Vault Path</span>
+                <span class="stat-value small-text" id="statVaultDir">Scanning...</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Encrypted Containers</span>
+                <span class="stat-value" id="statContainerCount">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Total Vault Size</span>
+                <span class="stat-value" id="statVaultSize">0 KB</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">Disk Space Saved</span>
+                <span class="stat-value status-badge green" id="statSavedSpace">0% (1.00x)</span>
+            </div>
+        </section>
+
+        <!-- Main Workspace Tabs -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="tab-query">Log Explorer & Search</button>
+            <button class="tab-btn" data-tab="tab-containers">Containers Archive</button>
+            <button class="tab-btn" data-tab="tab-pack">Packer & Ingest</button>
+        </div>
+
+        <!-- TAB 1: Log Explorer -->
+        <section id="tab-query" class="tab-content active">
+            <div class="query-toolbar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchQuery"
+                        placeholder="Filter message content, player nick, IP, exception...">
+                </div>
+
+                <div class="filter-group">
+                    <select id="filterLevel">
+                        <option value="">All Levels</option>
+                        <option value="ERROR">ERROR</option>
+                        <option value="WARN">WARN</option>
+                        <option value="INFO">INFO</option>
+                        <option value="DEBUG">DEBUG</option>
+                    </select>
+
+                    <select id="filterContainer">
+                        <option value="">All Containers (Full Vault)</option>
+                    </select>
+
+                    <button id="searchBtn" class="btn btn-primary">Decrypt & Search</button>
+                    <button id="liveStreamBtn" class="btn btn-secondary">⚡ Live Stream: OFF</button>
+                </div>
+            </div>
+
+            <div class="logs-container">
+                <div class="logs-header">
+                    <span class="col-time">Timestamp</span>
+                    <span class="col-source">Source</span>
+                    <span class="col-level">Level</span>
+                    <span class="col-msg">Decrypted Log Message</span>
+                </div>
+                <div id="logsBody" class="logs-body">
+                    <div class="empty-state">
+                        Enter secret key above and click <strong>"Decrypt & Search"</strong> to read vault containers.
+                    </div>
+                </div>
+                <div class="logs-footer">
+                    <span id="logCounter">0 records loaded</span>
+                    <button id="exportDecryptedBtn" class="btn btn-small btn-secondary" style="display:none;">Export
+                        View to .txt</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Containers Archive -->
+        <section id="tab-containers" class="tab-content">
+            <div class="containers-wrapper">
+                <div class="section-title">
+                    <div>
+                        <h3>Encrypted Daily / Hourly Containers (.myco)</h3>
+                        <p class="section-subtitle" id="containersSubinfo" style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Scanning vault containers...</p>
+                    </div>
+                    <button id="refreshContainersBtn" class="btn btn-secondary">Refresh</button>
+                </div>
+                <div id="containersGrid" class="containers-grid">
+                    <div class="empty-state" style="grid-column: 1 / -1;">Scanning vault directory...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Packer / Standalone Tools -->
+        <section id="tab-pack" class="tab-content">
+            <div class="pack-grid">
+                <div class="card pack-card">
+                    <h3>📦 Encrypt & Pack Raw Logs into .myco</h3>
+                    <p class="description">Paste raw log lines or drop any text file to instantly encrypt it into a
+                        high-density, tamper-evident .myco archive.</p>
+
+                    <div class="form-group">
+                        <label for="packSourceName">Log Source Identifier</label>
+                        <input type="text" id="packSourceName" value="manual-import"
+                            placeholder="e.g. minecraft-prod, auth-service">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="packRawText">Raw Log Content</label>
+                        <textarea id="packRawText" rows="10" placeholder="Paste log lines here..."></textarea>
+                    </div>
+
+                    <button id="runPackBtn" class="btn btn-primary">Encrypt & Save to Vault</button>
+                    <div id="packResult" class="result-msg"></div>
+                </div>
+
+                <div class="card pack-card">
+                    <h3>🔓 Standalone Container Decryptor</h3>
+                    <p class="description">Select any `.myco` container to download its full decrypted plain-text log.
+                    </p>
+
+                    <div class="form-group">
+                        <label for="unpackSelectFile">Select Vault Container</label>
+                        <select id="unpackSelectFile"></select>
+                    </div>
+
+                    <button id="runUnpackDownloadBtn" class="btn btn-secondary">Download Decrypted .log</button>
+                    <div id="unpackResult" class="result-msg"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <div>MYCO Vault 1.0.0 &bull; Open Source High-Efficiency Encrypted Logging</div>
+        <div class="footer-links">Zero External Runtime Dependencies &bull; AES-256-GCM + Brotli</div>
+    </footer>
+
+    <script src="app.js?v=1.0.0"></script>
+</body>
+
+</html>

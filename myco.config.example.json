@@ -1,0 +1,58 @@
+{
+  "vaultSecret": "change-this-to-your-strong-secret-key",
+  "vaultDir": "./vault",
+  "rotation": "daily",
+  "compression": {
+    "liveQuality": 7,
+    "batchQuality": 11
+  },
+  "flush": {
+    "maxRecords": 500,
+    "maxBytes": 65536,
+    "intervalMs": 5000
+  },
+  "sources": [
+    {
+      "id": "minecraft-server",
+      "name": "Minecraft Server Logs",
+      "path": "./server/logs/latest.log",
+      "preset": "minecraft",
+      "enabled": true
+    },
+    {
+      "id": "pm2-apps",
+      "name": "PM2 Process Logs",
+      "path": "~/.pm2/logs/*.log",
+      "preset": "pm2",
+      "enabled": false
+    },
+    {
+      "id": "nginx-access",
+      "name": "Nginx Access Logs",
+      "path": "/var/log/nginx/access.log",
+      "preset": "nginx",
+      "enabled": false
+    },
+    {
+      "id": "system-auth",
+      "name": "Linux Auth Logs",
+      "path": "/var/log/auth.log",
+      "preset": "syslog",
+      "enabled": false
+    }
+  ],
+  "filters": {
+    "stripAnsi": true,
+    "collapseDuplicates": true,
+    "ignoreRegex": [
+      "^\\s*$",
+      "\\[DEBUG\\] KeepAlive",
+      "GET /healthz 200"
+    ]
+  },
+  "ui": {
+    "enabled": true,
+    "port": 8080,
+    "host": "127.0.0.1"
+  }
+}

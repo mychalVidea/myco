@@ -1,0 +1,19 @@
+{
+  "vaultDir": "./vault-data",
+  "secret": "your-super-secret-password-or-leave-in-env",
+  "intervalMs": 30000,
+  "sources": [
+    {
+      "name": "nginx-access",
+      "path": "/var/log/nginx",
+      "pattern": "access*.log",
+      "enabled": true
+    },
+    {
+      "name": "app-production",
+      "path": "./logs",
+      "pattern": "*.log",
+      "enabled": true
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "name": "myco-vault",
+  "version": "1.0.0",
+  "description": "Zero-dependency military-grade encrypted log vault, Brotli compressor, and real-time log manager.",
+  "main": "src/index.js",
+  "bin": {
+    "myco": "bin/myco.js",
+    "myco-vault": "bin/myco.js"
+  },
+  "keywords": [
+    "logs",
+    "encryption",
+    "brotli",
+    "vault",
+    "chacha20-poly1305",
+    "aes-256-gcm",
+    "zero-dependency",
+    "monitoring",
+    "tail",
+    "cli"
+  ],
+  "author": "mychalVidea <https://mychalsmp.xyz>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node bin/myco.js daemon",
+    "ui": "node bin/myco.js ui",
+    "test": "node --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mychalVidea/myco-vault.git"
+  }
+}
