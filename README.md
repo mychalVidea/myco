@@ -1,6 +1,6 @@
 # MYCO Vault
 
-> **Zero-dependency military-grade encrypted log vault, Brotli compressor, and real-time log manager.**
+> **Zero-dependency deeply encrypted log vault, Brotli compressor, and real-time log manager.**
 
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0%20runtime-blue.svg)](package.json)
@@ -14,7 +14,7 @@ MYCO Vault is a lightweight, ultra-secure, and highly optimized log archiving an
 
 ## ✨ Features
 
-- 🛡️ **Military-Grade Dual-Layer AEAD Encryption**:
+- 🛡️ **Dual-Layer AEAD Encryption**:
   - Inner Layer: Hardware-accelerated `AES-256-GCM` (AES-NI).
   - Outer Layer: Constant-time `ChaCha20-Poly1305`.
   - Keys derived via `HKDF-SHA512` from your master secret + per-container random 16-byte salt.
@@ -24,7 +24,7 @@ MYCO Vault is a lightweight, ultra-secure, and highly optimized log archiving an
   - Sub-byte bit-packing (5-bit source ID + 3-bit log level in 1 byte).
   - Dynamic source dictionary per chunk.
   - LEB128 Varints for lengths and offsets.
-  - Achieves **80% to 99% space savings** compared to raw text logs.
+  - Achieves **up to 99% space savings** compared to raw text logs.
 - ⚡ **Zero External Runtime Dependencies**:
   - Built 100% on Node.js native primitives (`crypto`, `zlib`, `fs`, `http`, `dgram`, `readline`).
   - No bloated npm dependency trees or supply-chain attack vectors.
