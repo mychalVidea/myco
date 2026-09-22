@@ -5,7 +5,7 @@ We actively release security patches and cryptographic enhancements for the foll
 | Version | Supported |
 | :--- | :--- |
 | **1.1.x** | :white_check_mark: (Current Stable) |
-| **1.0.x** | :white_check_mark: |
+| **1.0.x** | :x: (Deprecated) |
 | < 1.0.0 | :x: (Deprecated / Prototype) |
 
 ## 🔒 Reporting a Vulnerability
