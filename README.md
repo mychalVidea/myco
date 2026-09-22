@@ -54,7 +54,7 @@ node bin/myco.js keygen
 *Output:*
 ```text
 Generated High-Entropy 256-bit Encryption Key:
-  1f277f4b34313d199b1a1401df1fafe419af497cef518259e9f4e7372eeed41a
+  0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
 ```
 
 ### 3. Create Configuration
@@ -211,7 +211,7 @@ You can configure MYCO Vault entirely via environment variables:
 
 | Variable | Description | Example |
 | :--- | :--- | :--- |
-| `VAULT_SECRET` | Master encryption key (fallback: `MYCO_SECRET`) | `1f277f4b34313d199b1a1401...` |
+| `VAULT_SECRET` | Master encryption key (fallback: `MYCO_SECRET`) | `your-secret-key-or-hex` |
 | `VAULT_DIR` | Directory containing `.myco` containers | `/var/log/vault` |
 | `PORT` | Web UI HTTP port | `8080` |
 | `MYCO_CONFIG` | Path to custom configuration JSON file | `/etc/myco/config.json` |
