@@ -92,6 +92,21 @@ function detectLogLevel(text) {
 }
 
 /**
+ * Ochrana citlivých údajů: automatické zamaskování hesel v příkazech /login, /register, atd.
+ * @param {string} text
+ * @returns {string}
+ */
+function sanitizeLogMessage(text) {
+    if (!text || typeof text !== 'string') return text || '';
+    if (text.charCodeAt(0) === 0x2f || text.includes('login') || text.includes('register') || text.includes('changepassword')) {
+        return text
+            .replace(/(\/(?:login|register|reg|l|changepassword)\s+)([^\s]+)/gi, '$1***')
+            .replace(/(issued server command:\s*\/(?:login|register|reg|l|changepassword)\s+)([^\s]+)/gi, '$1***');
+    }
+    return text;
+}
+
+/**
  * Encodes array of log records into COL4 Columnar binary Buffer
  * @param {Array<{ timestamp: number, source: string, level?: string|number, message: string }>} records
  * @returns {Buffer}
@@ -164,7 +179,8 @@ function encodeChunk(records) {
             overflowSources.push({ index: i, sourceId: srcIdx });
         }
 
-        const msgBuf = Buffer.from(String(rec.message ?? ''), 'utf8');
+        const cleanMsg = sanitizeLogMessage(rec.message);
+        const msgBuf = Buffer.from(cleanMsg, 'utf8');
         msgBuffers[i] = msgBuf;
         textByteLen += msgBuf.length;
         lensColSize += varintLength(msgBuf.length);

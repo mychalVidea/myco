@@ -1,6 +1,6 @@
 # MYCO Vault
 
-> **Zero-dependency deeply encrypted log vault, Brotli compressor, and real-time log manager.**
+> **Zero-dependency military-grade encrypted log vault, Brotli compressor, and real-time log manager.**
 
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org)
 [![Zero Dependencies](https://img.shields.io/badge/dependencies-0%20runtime-blue.svg)](package.json)
@@ -14,7 +14,7 @@ MYCO Vault is a lightweight, ultra-secure, and highly optimized log archiving an
 
 ## ✨ Features
 
-- 🛡️ **Dual-Layer AEAD Encryption**:
+- 🛡️ **Military-Grade Dual-Layer AEAD Encryption**:
   - Inner Layer: Hardware-accelerated `AES-256-GCM` (AES-NI).
   - Outer Layer: Constant-time `ChaCha20-Poly1305`.
   - Keys derived via `HKDF-SHA512` from your master secret + per-container random 16-byte salt.
@@ -24,7 +24,7 @@ MYCO Vault is a lightweight, ultra-secure, and highly optimized log archiving an
   - Sub-byte bit-packing (5-bit source ID + 3-bit log level in 1 byte).
   - Dynamic source dictionary per chunk.
   - LEB128 Varints for lengths and offsets.
-  - Achieves **up to 99% space savings** compared to raw text logs.
+  - Achieves **80% to 99.5% space savings** on structured production logs (COL4 bit-packing + Brotli Q11).
 - ⚡ **Zero External Runtime Dependencies**:
   - Built 100% on Node.js native primitives (`crypto`, `zlib`, `fs`, `http`, `dgram`, `readline`).
   - No bloated npm dependency trees or supply-chain attack vectors.
@@ -106,6 +106,10 @@ Thanks to the **COL4 Columnar Tokenizer** and Brotli Q11 engine, logs are partit
 > 2. **Sub-Byte Bit-Packing**: 1 byte encodes both a 5-bit source ID and a 3-bit log level.
 > 3. **Dynamic Source Dictionary**: Source names and common recurring substrings are stored once per chunk.
 > 4. **Brotli Q11 Shuffle**: When columnar data is ordered consecutively in memory, Brotli achieves up to **594x** compression ratios.
+
+> [!NOTE]
+> **Production Benchmark vs. General File Compression:**
+> The **99.5% storage reduction (~212x to ~594x)** is a **benchmark on real-world server logs** (4+ months of Minecraft SMP, Discord bot, and proxy logs). Log datasets are uniquely suited for COL4 columnar structuring because they feature highly repetitive thread prefixes, recurring levels (`INFO`/`WARN`), clustered timestamps, and dictionary strings. On arbitrary, unstructured binary or non-log data, compression reflects standard Brotli ratios.
 
 ---
 
